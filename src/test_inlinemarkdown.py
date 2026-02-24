@@ -1,6 +1,6 @@
 import unittest
 
-from inline_markdown import split_nodes_delimiter, split_nodes_image, split_nodes_link
+from inline_markdown import split_nodes_delimiter, split_nodes_image, split_nodes_link, text_to_textnodes
 from textnode import TextNode, TextType
 
 class TestSplitNode(unittest.TestCase):
@@ -66,5 +66,43 @@ class TestSplitNode(unittest.TestCase):
                 TextNode(" and ", TextType.TEXT, None),
                 TextNode("to youtube", TextType.LINK, "https://www.youtube.com/@bootdotdev"),
             ], 
+            new_nodes,
+        )
+
+    def test_text_to_testnode(self):
+        text = "This is **text** with an _italic_ word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)"
+        new_nodes = text_to_textnodes(text)
+        self.assertListEqual(
+            [
+                TextNode("This is ", TextType.TEXT, None),
+                TextNode("text", TextType.BOLD, None),
+                TextNode(" with an ", TextType.TEXT, None),
+                TextNode("italic", TextType.ITALIC, None),
+                TextNode(" word and a ", TextType.TEXT, None),
+                TextNode("code block", TextType.CODE, None),
+                TextNode(" and an ", TextType.TEXT, None),
+                TextNode("obi wan image", TextType.IMAGE, "https://i.imgur.com/fJRm4Vk.jpeg"),
+                TextNode(" and a ", TextType.TEXT, None),
+                TextNode("link", TextType.LINK, "https://boot.dev"),                
+            ],
+            new_nodes,
+        )
+
+    def test_text_to_testnode(self):
+        text = "Hello, **These words are in bold**, and the following words _are in Italic_. Let's add a `def main():` function. And a [Youtube](https://www.youtube.com) URL to your favorite video platform with some ![image](./images/image.png)"
+        new_nodes = text_to_textnodes(text)
+        self.assertListEqual(
+            [
+                TextNode("Hello, ", TextType.TEXT, None),
+                TextNode("These words are in bold", TextType.BOLD, None),
+                TextNode(", and the following words ", TextType.TEXT, None),
+                TextNode("are in Italic", TextType.ITALIC, None),
+                TextNode(". Let's add a ", TextType.TEXT, None),
+                TextNode("def main():", TextType.CODE, None),
+                TextNode(" function. And a ", TextType.TEXT, None),
+                TextNode("Youtube", TextType.LINK, "https://www.youtube.com"),
+                TextNode(" URL to your favorite video platform with some ", TextType.TEXT, None),
+                TextNode("image", TextType.IMAGE, "./images/image.png"),
+            ],
             new_nodes,
         )
