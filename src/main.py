@@ -4,6 +4,7 @@ from textnode import TextNode, TextType, text_node_to_html_node
 from htmlnode import HTMLNode, LeafNode, ParentNode
 from inline_markdown import split_nodes_delimiter, split_nodes_image, split_nodes_link, text_to_textnodes
 from extract_markdown_url import extract_markdown_images, extract_markdown_links
+from block_markdown import markdown_to_blocks, block_to_block_type
 
 def print_nodes(nodes):
     tab = 4
@@ -12,6 +13,14 @@ def print_nodes(nodes):
     for node in nodes:
         print(f"{tab * " "}{node},")
     print("]")    
+
+def print_str_list(string_list):
+    tab = 0
+    print("List of block strings from Markdown:")
+    print("[")
+    for str in string_list:
+        print(f"{tab * " "}{str}")
+    print("]")
 
 def old_test():
     text_node = TextNode("This is some anchor text", "link", "https://www.boot.dev")
@@ -136,8 +145,7 @@ def inline_md_split():
     # print_nodes(new_nodes)
     new_nodes = split_nodes_image([image_node])
 
-def main():
-
+def text_to_textnode():
     node = TextNode("This is **text** with an _italic_ word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)", TextType.TEXT)
 
     text = "This is **text** with an _italic_ word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)"
@@ -147,6 +155,70 @@ def main():
 
     print_nodes(new_nodes)
 
+def text_to_block_md(): 
+        md_text = """     
+    #This is a heading
+
+    This is a paragraph of text. It has some **bold** and _italic_ words inside of it.
+
+    - This is the first list item in a list block
+    - This is a list item
+    - This is another list item
+    """
+
+        md = """
+    #This is a heading 1
+
+    ##This is a heading 2
+
+    A code block
+    `
+    def main():
+        return 0
+    `
+
+
+
+    Lots of empty lines above:
+
+    1 Item one
+    2 Item two
+    """
+
+        str_list = markdown_to_blocks(md_text)
+        # print_str_list(str_list)
+        print(str_list)
+        print(markdown_to_blocks(md))
+
+def main():
+    text = "###### This is a heading"
+    print(block_to_block_type(text))
+
+    text = """```
+This is a 
+multiline
+code block
+```"""
+    print(block_to_block_type(text))
+
+    text = """> This is a quote
+> Quote this
+> End this"""
+    print(block_to_block_type(text))
+
+    text = """- This is
+- an unordered
+- list"""
+    print(block_to_block_type(text))
+
+    text = """1. This is
+2. an unordered
+3. list
+4. and more item"""
+    print(block_to_block_type(text))
+
+
+    return 0
 
 if __name__ == "__main__":
     main()
