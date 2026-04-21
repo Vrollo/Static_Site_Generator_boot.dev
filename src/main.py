@@ -221,6 +221,10 @@ def block_to_block_type_md():
 
 def main():
     print("Just a new line to commit")
+    print("not recording changes anymore?")
+
+# Arg why isn't this working
+
 
 #     md = """
 # This is **bolded** paragraph
