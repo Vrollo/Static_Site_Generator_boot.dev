@@ -5,8 +5,8 @@ class BlockType(Enum):
     HEADING = "heading"
     CODE = "code"
     QUOTE = "quote"
-    UNORDERED_LIST = "unordered_list"
-    ORDERED_LIST = "ordered_list"
+    ULIST = "unordered_list"
+    OLIST = "ordered_list"
 
 def markdown_to_blocks(markdown):
     blocks = []
@@ -38,22 +38,22 @@ def block_to_block_type(words) -> BlockType:
         return BlockType.QUOTE
 
     # Unordered list
-    valid_unordered_list = True
+    valid_ULIST = True
     for word in words.split("\n"):
         if not word.startswith("- "):
-            valid_unordered_list = False
-    if valid_unordered_list:
-        return BlockType.UNORDERED_LIST
+            valid_ULIST = False
+    if valid_ULIST:
+        return BlockType.ULIST
 
     # ordered list
-    valid_ordered_list = True
+    valid_OLIST = True
     index = 1
     for word in words.split("\n"):
         if not word.startswith(f"{index}. "):
-            valid_ordered_list = False
+            valid_OLIST = False
         index += 1
-    if valid_ordered_list:
-        return BlockType.ORDERED_LIST
+    if valid_OLIST:
+        return BlockType.OLIST
 
     return BlockType.PARAGRAPH
 

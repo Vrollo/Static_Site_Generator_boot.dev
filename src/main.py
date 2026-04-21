@@ -5,6 +5,7 @@ from htmlnode import HTMLNode, LeafNode, ParentNode
 from inline_markdown import split_nodes_delimiter, split_nodes_image, split_nodes_link, text_to_textnodes
 from extract_markdown_url import extract_markdown_images, extract_markdown_links
 from block_markdown import markdown_to_blocks, block_to_block_type
+from block_to_html import markdown_to_html_node
 
 def print_nodes(nodes):
     tab = 4
@@ -190,33 +191,54 @@ def text_to_block_md():
         print(str_list)
         print(markdown_to_blocks(md))
 
-def main():
+def block_to_block_type_md():
     text = "###### This is a heading"
     print(block_to_block_type(text))
 
     text = """```
-This is a 
-multiline
-code block
-```"""
+    This is a 
+    multiline
+    code block
+    ```"""
     print(block_to_block_type(text))
 
     text = """> This is a quote
-> Quote this
-> End this"""
+    > Quote this
+    > End this"""
     print(block_to_block_type(text))
 
     text = """- This is
-- an unordered
-- list"""
+    - an unordered
+    - list"""
     print(block_to_block_type(text))
 
     text = """1. This is
-2. an unordered
-3. list
-4. and more item"""
+    2. an unordered
+    3. list
+    4. and more item"""
     print(block_to_block_type(text))
+    pass
 
+def main():
+#     md = """
+# This is **bolded** paragraph
+# text in a p
+# tag here
+
+# This is another paragraph with _italic_ text and `code` here
+
+# """
+#     markdown_to_html_node(md)
+
+    md = """
+```
+This is text that _should_ remain
+the **same** even with inline stuff
+```
+"""
+    # md = "### This is a heading 3"
+
+    markdown_to_html_node(md)
 
     return 0
 
