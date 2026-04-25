@@ -220,8 +220,6 @@ def block_to_block_type_md():
     pass
 
 def main():
-    print("Just a new line to commit")
-    print("not recording changes anymore?")
 
 # Arg why isn't this working
 
