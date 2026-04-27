@@ -142,9 +142,9 @@ def inline_md_split():
     #     TextType.TEXT,
     # )        
 
-    # new_nodes = split_nodes_link([node])
-    # print_nodes(new_nodes)
-    new_nodes = split_nodes_image([image_node])
+    new_nodes = split_nodes_link([node])
+    print_nodes(new_nodes)
+    # new_nodes = split_nodes_image([image_node])
 
 def text_to_textnode():
     node = TextNode("This is **text** with an _italic_ word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)", TextType.TEXT)
@@ -243,13 +243,15 @@ def main():
 
     # md = "### This is a heading 3"
 
-    md = """
-- Main menu
-- Sub menu
-- Exit
-"""
+#     md = """
+# - Main menu
+# - Sub menu
+# - Exit
+# """
 
-    markdown_to_html_node(md)
+#     markdown_to_html_node(md)
+
+    inline_md_split()
 
     return 0
 

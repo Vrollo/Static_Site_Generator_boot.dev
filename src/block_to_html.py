@@ -58,16 +58,21 @@ def markdown_to_html_node(markdown):
     md_text_blocks = []
 
     # There will be a ParentNode with div created where all the blocks reside in
-    
+
     for block in md_blocks:
         # print(block)
         if len(md_blocks) > 1:
             # Still need to implement this part
+
+            # inline_md_split returns a list of textnodes
+            # convert the textnodes to html with text_node_to_html_node which returns a LeafNode
+            # each LeafeNode node will then be appended to nodes[]
+            
             print("This block contains child nodes")
         else:
             print("This main block should be a LeafNode and not a ParentNode")
             nodes.append(block_node_to_html_node(block, block_to_block_type(block)))
-        
+
         # print(block)
         # print(block_to_block_type(block))
         # md_text_blocks.append(text_to_textnodes(block))
