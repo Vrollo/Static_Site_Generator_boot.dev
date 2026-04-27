@@ -18,7 +18,7 @@ def text_to_children(text):
 
 def block_node_to_html_node(text: str, block_type: BlockType):
     node: HTMLNode = None
-    print(f"{block_type} - {text}")
+    print(f"\n{block_type} - {text}\n")
     match block_type:
         case BlockType.PARAGRAPH:
             node = LeafNode("p", text, None)
@@ -35,7 +35,18 @@ def block_node_to_html_node(text: str, block_type: BlockType):
             node = ParentNode("pre", c_node, None)
         case BlockType.QUOTE:
             s = text.replace(">", "").strip()
-            node = LeafNode("blockquote", s, None)            
+            node = LeafNode("blockquote", s, None)
+        case BlockType.ULIST:
+            # text = text.replace("- ", "")
+            c_node = []
+            for word in text.split("\n"):
+                c_node.append(LeafNode("li", word[2:], None))
+            node = ParentNode("ul", c_node, None)
+        case BlockType.OLIST:
+            c_node = []
+            for word in text.split("\n"):
+                c_node.append(LeafNode("li", word[3:], None))
+            node = ParentNode("ol", c_node, None)
     return node    
 
 
@@ -51,9 +62,10 @@ def markdown_to_html_node(markdown):
     for block in md_blocks:
         # print(block)
         if len(md_blocks) > 1:
+            # Still need to implement this part
             print("This block contains child nodes")
         else:
-            print("This main block should be a leafnode and not a parentnode")
+            print("This main block should be a LeafNode and not a ParentNode")
             nodes.append(block_node_to_html_node(block, block_to_block_type(block)))
         
         # print(block)
@@ -77,4 +89,4 @@ def markdown_to_html_node(markdown):
 # 2. For each block you can then determine what kind of BlockType it is
 #    Most of this will be parent nodes, but some of them leaf nodes if they don't have children
 # 3. Convert the MarkDown blocks into smaller TextNode  Blocks 
-# 4. Each TextNode can then be converted to a html_node
+# 4. Each TextNode can then be converted to a HTMLNode

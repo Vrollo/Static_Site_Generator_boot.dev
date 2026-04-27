@@ -234,13 +234,20 @@ def main():
 # """
 #     markdown_to_html_node(md)
 
-    md = """
-```
-This is text that _should_ remain
-the **same** even with inline stuff
-```
-"""
+#     md = """
+# ```
+# This is text that _should_ remain
+# the **same** even with inline stuff
+# ```
+# """
+
     # md = "### This is a heading 3"
+
+    md = """
+- Main menu
+- Sub menu
+- Exit
+"""
 
     markdown_to_html_node(md)
 
