@@ -151,7 +151,6 @@ def text_to_textnode():
 
     text = "This is **text** with an _italic_ word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)"
 
-
     new_nodes = text_to_textnodes(text)
 
     print_nodes(new_nodes)
@@ -224,24 +223,24 @@ def main():
 # Arg why isn't this working
 
 
-#     md = """
-# This is **bolded** paragraph
-# text in a p
-# tag here
+    md = """
+This is **bolded** paragraph
+text in a p
+tag here
 
-# This is another paragraph with _italic_ text and `code` here
+This is another paragraph with _italic_ text and `code` here
 
-# """
+"""
 #     markdown_to_html_node(md)
 
-#     md = """
-# ```
-# This is text that _should_ remain
-# the **same** even with inline stuff
-# ```
-# """
+    md = """
+```
+This is text that _should_ remain
+the **same** even with inline stuff
+```
+"""
 
-    # md = "### This is a heading 3"
+#     md = "### This is a heading 3"
 
 #     md = """
 # - Main menu
@@ -249,9 +248,9 @@ def main():
 # - Exit
 # """
 
-#     markdown_to_html_node(md)
+    markdown_to_html_node(md)
+    # text_to_textnode()
 
-    inline_md_split()
 
     return 0
 

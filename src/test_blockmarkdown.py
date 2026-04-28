@@ -95,14 +95,14 @@ code block
         text = """- This is
 - an unordered
 - list"""
-        self.assertEqual(block_to_block_type(text), BlockType.UNORDERED_LIST)
+        self.assertEqual(block_to_block_type(text), BlockType.ULIST)
 
     def test_ordered_list(self):
         text = """1. This is
 2. an unordered
 3. list
 4. and more item"""
-        self.assertEqual(block_to_block_type(text), BlockType.ORDERED_LIST)
+        self.assertEqual(block_to_block_type(text), BlockType.OLIST)
 
     def test_paragraph_block1(self):
         text = """1. This is

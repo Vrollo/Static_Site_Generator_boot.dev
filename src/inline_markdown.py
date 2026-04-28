@@ -97,7 +97,7 @@ def split_nodes_link(old_nodes):
 
 
 
-def text_to_textnodes(text):
+def text_to_textnodes(text) -> TextNode:
     new_nodes = []
 
     new_nodes.append(TextNode(text, TextType.TEXT))

@@ -16,7 +16,7 @@ def count_consecutive_char(text, search_char) -> int:
 def text_to_children(text):
     pass
 
-def block_node_to_html_node(text: str, block_type: BlockType):
+def block_node_to_html_node(text: str, block_type: BlockType) -> HTMLNode:
     node: HTMLNode = None
     print(f"\n{block_type} - {text}\n")
     match block_type:
@@ -62,22 +62,34 @@ def markdown_to_html_node(markdown):
     for block in md_blocks:
         # print(block)
         if len(md_blocks) > 1:
-            # Still need to implement this part
+            # When there are more blocks, this means you have a paragraph with child nodes
+            # child nodes should be though of bold, italic, text image et
 
-            # inline_md_split returns a list of textnodes
-            # convert the textnodes to html with text_node_to_html_node which returns a LeafNode
-            # each LeafeNode node will then be appended to nodes[]
-            
-            print("This block contains child nodes")
+            # inline_md_split returns a list of strings
+            # convert the list of strings to TextNode, text_to_textnodes returns a list of TextNode
+
+            # replace \n as this seems to be the case in the example test case from boot.dev
+            inter_nodes = []    # intermediate node that can be added to nodes[] as a child, as it needs to be wrapped with <p></p>
+            text_nodes = text_to_textnodes(block.replace("\n", " "))
+            for text_node in text_nodes:
+                child_node = text_node_to_html_node(text_node)
+                inter_nodes.append(child_node)
+
+            # Each block should be wrapped in a paragraph node, which is a ParentNode
+            paragraph_node = ParentNode("p", inter_nodes, None)
+            nodes.append(paragraph_node)
         else:
-            print("This main block should be a LeafNode and not a ParentNode")
+            # print("This main block should be a LeafNode and not a ParentNode")
             nodes.append(block_node_to_html_node(block, block_to_block_type(block)))
 
         # print(block)
         # print(block_to_block_type(block))
         # md_text_blocks.append(text_to_textnodes(block))
+        
     parent_node = ParentNode("div", nodes, None)
-    print(parent_node.to_html())
+    return parent_node
+
+    # print(parent_node.to_html())
 
     # for block in md_text_blocks:
     #     for b in block:
@@ -86,7 +98,6 @@ def markdown_to_html_node(markdown):
     # for node in nodes:
     #     print(node.to_html())
 
-    pass
 
 
 
