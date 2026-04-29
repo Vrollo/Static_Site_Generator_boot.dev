@@ -1,8 +1,7 @@
 from htmlnode import HTMLNode, LeafNode, ParentNode
-from textnode import TextNode, TextType
 from block_markdown import markdown_to_blocks, block_to_block_type, BlockType
 from inline_markdown import text_to_textnodes
-from textnode import TextType, TextNode, text_node_to_html_node
+from textnode import text_node_to_html_node
 
 def count_consecutive_char(text, search_char) -> int:
     count = 0
@@ -18,7 +17,7 @@ def text_to_children(text):
 
 def block_node_to_html_node(text: str, block_type: BlockType) -> HTMLNode:
     node: HTMLNode = None
-    print(f"\n{block_type} - {text}\n")
+    # print(f"\n{block_type} - {text}\n")
     match block_type:
         case BlockType.PARAGRAPH:
             node = LeafNode("p", text, None)
@@ -55,13 +54,19 @@ def markdown_to_html_node(markdown):
 
     md_blocks = markdown_to_blocks(markdown)
     nodes = []
-    md_text_blocks = []
+    # md_text_blocks = []
 
     # There will be a ParentNode with div created where all the blocks reside in
 
     for block in md_blocks:
         # print(block)
         if len(md_blocks) > 1:
+            # everything was theated as a PARAGRAPH added a condition for now
+            # print(block_to_block_type(block))
+            if (block_to_block_type(block)) != BlockType.PARAGRAPH:
+                nodes.append(block_node_to_html_node(block, block_to_block_type(block)))
+                continue    
+
             # When there are more blocks, this means you have a paragraph with child nodes
             # child nodes should be though of bold, italic, text image et
 
@@ -69,6 +74,10 @@ def markdown_to_html_node(markdown):
             # convert the list of strings to TextNode, text_to_textnodes returns a list of TextNode
 
             # replace \n as this seems to be the case in the example test case from boot.dev
+            
+            # TODO - This part has to be rewritten to call the helper function block_node_to_html_node for paragraph
+            # TODO - Although it might be correct and the below part needs to be moved into the helper function
+
             inter_nodes = []    # intermediate node that can be added to nodes[] as a child, as it needs to be wrapped with <p></p>
             text_nodes = text_to_textnodes(block.replace("\n", " "))
             for text_node in text_nodes:
@@ -85,9 +94,9 @@ def markdown_to_html_node(markdown):
         # print(block)
         # print(block_to_block_type(block))
         # md_text_blocks.append(text_to_textnodes(block))
-        
-    parent_node = ParentNode("div", nodes, None)
-    return parent_node
+
+    return ParentNode("div", nodes, None)
+    # return parent_node
 
     # print(parent_node.to_html())
 

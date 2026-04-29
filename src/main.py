@@ -248,7 +248,24 @@ the **same** even with inline stuff
 # - Exit
 # """
 
-    markdown_to_html_node(md)
+    md = """
+# This is just a test with a full code block
+
+## Here is an unordered list
+
+- Item 1
+- Item 2
+- Item 3
+
+```import some library```
+
+Here is some **bold text**, and here we have some _italic text_.
+"""
+
+    # md = "This is a simple paragraph"
+
+    node = markdown_to_html_node(md)
+    print(node.to_html())
     # text_to_textnode()
 
 
