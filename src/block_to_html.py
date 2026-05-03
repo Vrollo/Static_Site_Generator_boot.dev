@@ -49,7 +49,7 @@ def block_node_to_html_node(text: str, block_type: BlockType) -> HTMLNode:
     return node    
 
 
-def markdown_to_html_node(markdown):
+def markdown_to_html_node(markdown: str) -> HTMLNode:
 
 
     md_blocks = markdown_to_blocks(markdown)
