@@ -1,5 +1,5 @@
 import unittest
-from block_to_html import markdown_to_html_node
+from block_to_html import markdown_to_html_node, extract_title
 
 class ClassBlockToHTML(unittest.TestCase):
     def test_paragraphs(self):
@@ -83,7 +83,38 @@ the **same** even with inline stuff
         self.assertEqual(
             html,
             "<div><ul><li>Item 1</li><li>Item 2</li><li>Item 3</li></ul></div>",
-        )                      
+        )    
+
+    def test_extract_title_1(self):
+        md = """
+# This is a title
+"""
+        title = extract_title(md)
+        self.assertEqual(
+            title, 
+            "This is a title"
+        )
+
+    def test_extract_title_2(self):
+        md = """
+## This is a sub title
+"""       
+        # title = extract_title(md)
+        self.assertRaises(Exception, extract_title, md)
+
+    def test_extract_title_3(self):
+        md = """
+#This is a title, but incorrectly formatted, missing the space
+"""       
+        # title = extract_title(md)
+        self.assertRaises(Exception, extract_title, md)
+
+    def test_extract_title_4(self):
+        md = """
+This is a title wannabe
+"""       
+        # title = extract_title(md)
+        self.assertRaises(Exception, extract_title, md)
 
     # add some additional tests for the various blocktypes, before submitting to boot.dev
 

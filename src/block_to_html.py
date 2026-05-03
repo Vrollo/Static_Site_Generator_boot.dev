@@ -12,8 +12,17 @@ def count_consecutive_char(text, search_char) -> int:
             break
     return count
 
-def text_to_children(text):
-    pass
+def extract_title(markdown: str) -> str:
+    # Title should always but the 1st markdown block
+    md_blocks = markdown_to_blocks(markdown)
+    block = md_blocks[0]
+    title = ""
+    count = count_consecutive_char(block, "#")
+    if (block_to_block_type(block) == BlockType.HEADING) and (count == 1):
+        title = block.replace("#", "").strip()
+    else:
+        raise Exception("Invalid title: 1st MD block should be '# '")
+    return title
 
 def block_node_to_html_node(text: str, block_type: BlockType) -> HTMLNode:
     node: HTMLNode = None

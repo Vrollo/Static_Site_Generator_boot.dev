@@ -1,7 +1,7 @@
 import os
 import shutil
 
-from block_to_html import block_node_to_html_node
+from block_to_html import block_node_to_html_node, extract_title
 
 # Test function for recursive function to show all files in tree
 def list_files_structure(source: str) -> None:
@@ -30,8 +30,8 @@ def copy_file_structure(source: str, destination: str) -> None:
             copy_file_structure(src_path, dest_path)
     return
 
-# Helper function to create a new directory with correct mode
 def create_dir(new_dir: str) -> None:
+    # Helper function to create a new directory with correct mode
     os.mkdir(new_dir, mode=0o755)
 
 def clean_destination_dir(destination: str) -> None:
@@ -52,9 +52,17 @@ def main():
 
     # list_files_structure(static_dir)
 
+    md = '''
+#This is a title
 
-    clean_destination_dir(public_dir)
-    copy_file_structure(static_dir, public_dir)
+Hello there
+'''
+    title = extract_title(md)
+    print(title)
+
+    # clean_destination_dir(public_dir)
+    # copy_file_structure(static_dir, public_dir)
+
 
 
 if __name__ == "__main__":
