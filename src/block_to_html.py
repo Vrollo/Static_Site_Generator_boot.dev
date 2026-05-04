@@ -49,13 +49,23 @@ def block_node_to_html_node(text: str, block_type: BlockType) -> HTMLNode:
             c_node = []
             for word in text.split("\n"):
                 # TODO the text needs to be converted to html too. The example contains an italic
-                c_node.append(LeafNode("li", word[2:], None))
+                inter_str = ""
+                text_nodes = text_to_textnodes(word[2:])
+                for node in text_nodes:
+                    child_node = text_node_to_html_node(node)
+                    inter_str += child_node.to_html()
+                c_node.append(LeafNode("li", inter_str, None))
             node = ParentNode("ul", c_node, None)
         case BlockType.OLIST:
             c_node = []
             for word in text.split("\n"):
                 # TODO the text needs to be converted to html too. The example contains an italic
-                c_node.append(LeafNode("li", word[3:], None))
+                inter_str = ""
+                text_nodes = text_to_textnodes(word[3:])
+                for node in text_nodes:
+                    child_node = text_node_to_html_node(node)
+                    inter_str += child_node.to_html()
+                c_node.append(LeafNode("li", inter_str, None))
             node = ParentNode("ol", c_node, None)
     return node    
 

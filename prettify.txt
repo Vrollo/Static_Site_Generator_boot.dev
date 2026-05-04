@@ -1,0 +1,32 @@
+everything looks good, but is there a way to easily format the generated to_html() in the string variable before saving the .html?
+Boots
+
+Great question! The HTML produced by your to_html() method is a single long string with no line breaks or indentation. There are a few ways to prettify it before writing to disk:
+Option 1: Python's standard library — xml.dom.minidom
+
+from xml.dom import minidom
+
+pretty = minidom.parseString(html_string).toprettyxml(indent="  ")
+
+Caveat: it's strict about well-formed XML, so unclosed tags like <img> or <br> (valid in HTML5) can break it. You'd need to wrap your content carefully.
+Option 2: BeautifulSoup (third-party, most popular)
+
+from bs4 import BeautifulSoup
+
+pretty = BeautifulSoup(html_string, "html.parser").prettify()
+
+Install with pip install beautifulsoup4. It's forgiving with HTML quirks and is the go-to choice for most Python devs.
+Option 3: Roll your own in to_html()
+
+Since you control the HTMLNode / ParentNode / LeafNode classes, you could add an optional indent parameter to to_html() that recursively adds \n and spaces based on depth. This is a fun exercise but more work.
+Recommendation
+
+For a static site generator project, browsers don't care about whitespace — pretty HTML is purely for your debugging pleasure. If you just want readable output for inspection, BeautifulSoup is the easiest drop-in:
+
+from bs4 import BeautifulSoup
+
+html_string = node.to_html()
+pretty_html = BeautifulSoup(html_string, "html.parser").prettify()
+# then write pretty_html to dest_path
+
+Just remember to add it to your dependencies if you go that route.

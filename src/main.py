@@ -1,5 +1,7 @@
 import os
 import shutil
+import bs4
+from bs4 import BeautifulSoup
 
 from block_to_html import markdown_to_html_node, extract_title
 
@@ -53,8 +55,11 @@ def generate_page(from_path: str, template_path: str, dest_path: str) -> None:
     tmp_file = tmp_file.replace("{{ Title }}", title)
     tmp_file = tmp_file.replace("{{ Content }}", markdown_to_html_node(src_file).to_html())
 
+    pretty_html = BeautifulSoup(tmp_file, "html.parser")
+    formatter = bs4.formatter.HTMLFormatter(indent=4)
+
     with open(dest_path, mode="w") as f:
-        f.write(tmp_file)
+        f.write(pretty_html.prettify(formatter=formatter))
 
     # print(tmp_file)
     
