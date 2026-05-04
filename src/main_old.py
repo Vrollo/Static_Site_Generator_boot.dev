@@ -242,25 +242,25 @@ the **same** even with inline stuff
 
 #     md = "### This is a heading 3"
 
-#     md = """
-# - Main menu
-# - Sub menu
-# - Exit
-# """
-
     md = """
-# This is just a test with a full code block
-
-## Here is an unordered list
-
-- Item 1
-- Item 2
-- Item 3
-
-```import some library```
-
-Here is some **bold text**, and here we have some _italic text_.
+- This menu is _italic_ menu
+- This **sub menu** is in bold
+- Exit
 """
+
+#     md = """
+# # This is just a test with a full code block
+
+# ## Here is an unordered list
+
+# - Item 1
+# - Item 2
+# - Item 3
+
+# ```import some library```
+
+# Here is some **bold text**, and here we have some _italic text_.
+# """
 
     # md = "This is a simple paragraph"
 

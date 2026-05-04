@@ -1,3 +1,5 @@
+import typing
+
 from enum import Enum
 
 class BlockType(Enum):
@@ -8,7 +10,8 @@ class BlockType(Enum):
     ULIST = "unordered_list"
     OLIST = "ordered_list"
 
-def markdown_to_blocks(markdown):
+def markdown_to_blocks(markdown: str) -> typing.List[str]:
+    # This function returns a list of strings
     blocks = []
     temp_blocks = markdown.split("\n\n")
 

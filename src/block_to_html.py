@@ -21,7 +21,7 @@ def extract_title(markdown: str) -> str:
     if (block_to_block_type(block) == BlockType.HEADING) and (count == 1):
         title = block.replace("#", "").strip()
     else:
-        raise Exception("Invalid title: 1st MD block should be '# '")
+        raise Exception("Invalid title: no '# ' heading found in the first MD block")
     return title
 
 def block_node_to_html_node(text: str, block_type: BlockType) -> HTMLNode:
@@ -48,11 +48,13 @@ def block_node_to_html_node(text: str, block_type: BlockType) -> HTMLNode:
             # text = text.replace("- ", "")
             c_node = []
             for word in text.split("\n"):
+                # TODO the text needs to be converted to html too. The example contains an italic
                 c_node.append(LeafNode("li", word[2:], None))
             node = ParentNode("ul", c_node, None)
         case BlockType.OLIST:
             c_node = []
             for word in text.split("\n"):
+                # TODO the text needs to be converted to html too. The example contains an italic
                 c_node.append(LeafNode("li", word[3:], None))
             node = ParentNode("ol", c_node, None)
     return node    
