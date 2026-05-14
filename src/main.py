@@ -36,6 +36,21 @@ def create_dir(new_dir: str) -> None:
     # Helper function to create a new directory with correct mode
     os.mkdir(new_dir, mode=0o755)
 
+def generate_pages_recursive(dir_path_content: str, template_path: str, dest_dir_path: str):
+    # start with a simple recursive listing content and go from there
+    current_content_dir = os.listdir(dir_path_content)
+    for entry in current_content_dir:
+        content_path = os.path.join(dir_path_content, entry)
+        dest_path = os.path.join(dest_dir_path, entry)
+        if os.path.isfile(content_path):
+            dest_path = dest_path.replace("md", "html")
+            print(f"from: {content_path} \nto  : {dest_path}\n\n")
+            generate_page(content_path, template_path, dest_path)
+        else:
+            print(f"from: {content_path}  \nto  : {dest_path}\n\n")
+            create_dir(dest_path)
+            generate_pages_recursive(content_path, template_path, dest_path)
+
 def generate_page(from_path: str, template_path: str, dest_path: str) -> None:
     src_file: str = None 
     tmp_file: str = None
@@ -59,7 +74,8 @@ def generate_page(from_path: str, template_path: str, dest_path: str) -> None:
     formatter = bs4.formatter.HTMLFormatter(indent=4)
 
     with open(dest_path, mode="w") as f:
-        f.write(pretty_html.prettify(formatter=formatter))
+        # f.write(pretty_html.prettify(formatter=formatter))
+        f.write(tmp_file)
 
     # print(tmp_file)
     
@@ -78,15 +94,18 @@ def main():
     working_dir = os.getcwd()
     static_dir = os.path.join(working_dir, 'static')
     public_dir = os.path.join(working_dir, 'public')
-    from_path = os.path.join(working_dir, 'content/index.md')
-    dest_path = os.path.join(working_dir, 'public/index.html')
+    # from_path = os.path.join(working_dir, 'content/index.md')
+    from_path = os.path.join(working_dir, 'content')
+    dest_path = os.path.join(working_dir, 'public')
     temp_path = os.path.join(working_dir, 'template.html')
     # print(f"The current working directory is {working_dir}\n")
 
     # list_files_structure(static_dir)
     clean_destination_dir(public_dir)
     copy_file_structure(static_dir, public_dir)
-    generate_page(from_path, temp_path, dest_path)
+    # generate_page(from_path, temp_path, dest_path)
+
+    generate_pages_recursive(from_path, temp_path, dest_path)
 
     # clean_destination_dir(public_dir)
     # copy_file_structure(static_dir, public_dir)

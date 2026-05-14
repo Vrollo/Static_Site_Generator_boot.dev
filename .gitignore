@@ -1,4 +1,5 @@
 uv.lock
 .idea
 .venv
+public/
 __pycache__
