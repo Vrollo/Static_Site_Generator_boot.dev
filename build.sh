@@ -1,1 +1,1 @@
-python3 src/main.py "https://github.com/Vrollo/Static_Site_Generator_boot.dev/"
+python3 src/main.py "https://vrollo.github.io/Static_Site_Generator_boot.dev/"
