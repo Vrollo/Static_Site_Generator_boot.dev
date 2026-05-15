@@ -1,4 +1,5 @@
 import os
+import sys
 import shutil
 import bs4
 from bs4 import BeautifulSoup
@@ -36,7 +37,7 @@ def create_dir(new_dir: str) -> None:
     # Helper function to create a new directory with correct mode
     os.mkdir(new_dir, mode=0o755)
 
-def generate_pages_recursive(dir_path_content: str, template_path: str, dest_dir_path: str):
+def generate_pages_recursive(dir_path_content: str, template_path: str, dest_dir_path: str, base_path: str):
     # start with a simple recursive listing content and go from there
     current_content_dir = os.listdir(dir_path_content)
     for entry in current_content_dir:
@@ -44,14 +45,14 @@ def generate_pages_recursive(dir_path_content: str, template_path: str, dest_dir
         dest_path = os.path.join(dest_dir_path, entry)
         if os.path.isfile(content_path):
             dest_path = dest_path.replace("md", "html")
-            print(f"from: {content_path} \nto  : {dest_path}\n\n")
-            generate_page(content_path, template_path, dest_path)
+            # print(f"from: {content_path} \nto  : {dest_path}\n\n")
+            generate_page(content_path, template_path, dest_path, base_path)
         else:
-            print(f"from: {content_path}  \nto  : {dest_path}\n\n")
+            # print(f"from: {content_path}  \nto  : {dest_path}\n\n")
             create_dir(dest_path)
-            generate_pages_recursive(content_path, template_path, dest_path)
+            generate_pages_recursive(content_path, template_path, dest_path, base_path)
 
-def generate_page(from_path: str, template_path: str, dest_path: str) -> None:
+def generate_page(from_path: str, template_path: str, dest_path: str, base_path: str) -> None:
     src_file: str = None 
     tmp_file: str = None
     print(f"Generating page \nfrom : {from_path} \nto   : {dest_path} \nusing: {template_path}\n")
@@ -67,14 +68,19 @@ def generate_page(from_path: str, template_path: str, dest_path: str) -> None:
     # Get title from index.md
     title = extract_title(src_file)
 
+    # Replace of the Title and Content in the template.html
     tmp_file = tmp_file.replace("{{ Title }}", title)
     tmp_file = tmp_file.replace("{{ Content }}", markdown_to_html_node(src_file).to_html())
+
+    # Replace the href and src basepath
+    tmp_file = tmp_file.replace("href=\"/", f"href=\"{base_path}")
+    tmp_file = tmp_file.replace("src=\"/", f"src=\"{base_path}")
 
     pretty_html = BeautifulSoup(tmp_file, "html.parser")
     formatter = bs4.formatter.HTMLFormatter(indent=4)
 
     with open(dest_path, mode="w") as f:
-        # f.write(pretty_html.prettify(formatter=formatter))
+        # f.write(pretty_html.prettify(formatter=formatter))    # swith back to this one, once project is finished
         f.write(tmp_file)
 
     # print(tmp_file)
@@ -91,24 +97,38 @@ def clean_destination_dir(destination: str) -> None:
     create_dir(destination)
 
 def main():
+
+    basepath = ""
+
+    if len(sys.argv) == 1:
+        basepath = "/"
+    elif len(sys.argv) == 2:
+        basepath = sys.argv[1]
+    else:
+        print("You have entered too many parameters")
+        exit()
+
+    print(f"Basepath: {basepath}")
+
+
     working_dir = os.getcwd()
     static_dir = os.path.join(working_dir, 'static')
     public_dir = os.path.join(working_dir, 'public')
-    # from_path = os.path.join(working_dir, 'content/index.md')
+    ## from_path = os.path.join(working_dir, 'content/index.md')
     from_path = os.path.join(working_dir, 'content')
-    dest_path = os.path.join(working_dir, 'public')
+    dest_path = os.path.join(working_dir, 'docs')
     temp_path = os.path.join(working_dir, 'template.html')
-    # print(f"The current working directory is {working_dir}\n")
+    ## print(f"The current working directory is {working_dir}\n")
 
-    # list_files_structure(static_dir)
-    clean_destination_dir(public_dir)
-    copy_file_structure(static_dir, public_dir)
-    # generate_page(from_path, temp_path, dest_path)
+    ## list_files_structure(static_dir)
+    clean_destination_dir(dest_path)
+    copy_file_structure(static_dir, dest_path)
+    ## generate_page(from_path, temp_path, dest_path)
 
-    generate_pages_recursive(from_path, temp_path, dest_path)
+    generate_pages_recursive(from_path, temp_path, dest_path, basepath)
 
-    # clean_destination_dir(public_dir)
-    # copy_file_structure(static_dir, public_dir)
+    ## clean_destination_dir(dest_path)
+    ## copy_file_structure(static_dir, dest_path)
 
 
 
